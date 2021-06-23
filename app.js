@@ -11,25 +11,23 @@ jokeBtn.addEventListener('click', function(e) {
     xhr.onload = function() {
         if(this.status === 200) {
             const response = JSON.parse(this.responseText);
+            
+            let output = ``;
 
             if((response.type) === 'success') {
-                response.value.forEach(function(joke, index) {
-                    displayJoke(joke.joke);
-                });
                 
+                response.value.forEach(function(joke, index) {
+                    output += `<li>${joke.joke}</li>`;
+                });
+
             } else {
-                displayJokes('Something went wrong')
+                output = '<li>Something went wrong</li>';
             }
             
+            document.querySelector('.jokes').innerHTML = output;
         }
     }
 
     xhr.send();
     e.preventDefault();
 });
-
-function displayJoke(joke) {
-    const jokeLi = document.createElement('li');
-    jokeLi.appendChild(document.createTextNode(joke));
-    document.querySelector('.jokes').appendChild(jokeLi);   
-}
